@@ -1,7 +1,55 @@
-# Massive BAN Tool
+# Twitch Massive BAN Tool
+
+### English:
+This is a tool for Twitch mods to ban a lot of people on a lot of channels without doing manually.
+
+## Requirements
+To use this tool, you need:
+- Node.js and NPM installed on your computer
+- a token generated here: https://twitchtokengenerator.com/ with the following permission active:
+  - `chat:read`
+  - `channel:moderate`
+
+## Windows installation
+1. installa`node.js` and `npm`: https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows
+2. open PowerShell (select the option "Run as Administrator")
+3. on PowerShell, enter inside the script folder
+4. digit `npm install`
+
+## MacOS installation
+1. install `node.js` and `npm`: https://www.programsbuzz.com/article/install-node-js-and-npm-mac-os
+2. open the terminal (Applications/Utility/Terminal)
+3. on PowerShell, enter inside the script folder
+4. digit `npm install`
+
+## Linux installation
+1. installa `node.js` and `npm`: https://linuxconfig.org/how-to-install-node-js-on-linux
+2. open the terminal (dipends on the distro, usually is home/Accessories/Terminal)
+3. on PowerShell, enter inside the script folder
+4. digit `npm install`
+
+## Configurazione
+To make this tool works, it's required to edit those files: `config.json` and `banlist.txt`.
+Inside `config.json` you have to write:
+- Your username
+- the access_token generated here: https://twitchtokengenerator.com/
+- the list of the channel you're mod in
+
+Inside `banlist.txt` you have to insert the users to ban.
+A line, a user banned.
+It's required to format the text as it follows:
+```
+username,reason to ban
+```
+
+## Execution
+To begin the MASSIVE BAN, just digit `npm run ban` in the Terminal, inside the tool folder.
+I you want to use a different text file, digit `node ban.js -f path/to/file.txt`.
+
+Have fun!
 
 ### Italian:
-Tool per bannare tantissimi utenti da tantissimi canali senza che tu debba stare a farlo manualmente.
+Questo Tool per bannare tantissimi utenti da tantissimi canali senza che tu debba stare a farlo manualmente.
 
 ## Prerequisiti
 Per poter utilizzare questo tool è necessario avere:
@@ -39,13 +87,14 @@ Dentro `config.json` devi inserire:
 
 Dentro `banlist.txt` inserisci la gente che si vuole bannare.
 Una riga, un utente bannato.
-è necessario inserire prima lo username del bannato e poi la ragione del ban.
-I due valori devono essere separate dalla virgola (Va da sè che la virgola non può essere usata nel testo della ragione del ban).
-Puoi usare anche altri file di testo, basta che siano formattati allo stesso modo.
+Le righe devono essere formattate in questo modo:
+```
+username,reason to ban
+```
 
 ## Esecuzione
 Per iniziare l'opera di Ban Massivo, digitare nel terminale/PowerShell, sempre all'interno della cartella dello script, `npm run ban`.
-Se vi sentite degli hacker potete invece digitare `node ban.js -f banlist.txt`, tanto è uguale.
+Se volete usare un altro file, digitate `node ban.js -f percorso/del/file.txt`.
 
 Lo script inizierà a bannare gli utenti su ogni singolo canale inserito nel file `config.json`.
 Ci impiega un pò perchè a Twitch non piace quando gli si inviano tante richieste provenienti dallo stesso indirizzo IP allo stesso momento.
