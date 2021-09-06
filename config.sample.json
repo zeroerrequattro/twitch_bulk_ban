@@ -1,0 +1,8 @@
+{
+  "username": "il_tuo_username",
+  "access_token": "access_token",
+  "channels": [
+    "canale_01",
+    "canale_02"
+  ]
+}
