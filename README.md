@@ -28,7 +28,7 @@ To use this tool, you need:
 3. on PowerShell, enter inside the script folder
 4. digit `npm install`
 
-## Configurazione
+## Configuration
 To make this tool works, it's required to edit those files: `config.json` and `banlist.txt`.
 Inside `config.json` you have to write:
 - Your username
@@ -37,7 +37,9 @@ Inside `config.json` you have to write:
 
 Inside `banlist.txt` you have to insert the users to ban.
 A line, a user banned.
+
 It's required to format the text as it follows:
+
 ```
 username,reason to ban
 ```
@@ -87,7 +89,9 @@ Dentro `config.json` devi inserire:
 
 Dentro `banlist.txt` inserisci la gente che si vuole bannare.
 Una riga, un utente bannato.
+
 Le righe devono essere formattate in questo modo:
+
 ```
 username,reason to ban
 ```
