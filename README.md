@@ -11,22 +11,22 @@ To use this tool, you need:
   - `channel:moderate`
 
 ## Windows installation
-1. installa`node.js` and `npm`: https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows
+1. install `node.js` and `npm`: https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows
 2. open PowerShell (select the option "Run as Administrator")
 3. on PowerShell, enter inside the script folder
-4. digit `npm install`
+4. type `npm install`
 
 ## MacOS installation
 1. install `node.js` and `npm`: https://www.programsbuzz.com/article/install-node-js-and-npm-mac-os
 2. open the terminal (Applications/Utility/Terminal)
 3. on PowerShell, enter inside the script folder
-4. digit `npm install`
+4. type `npm install`
 
 ## Linux installation
 1. installa `node.js` and `npm`: https://linuxconfig.org/how-to-install-node-js-on-linux
-2. open the terminal (dipends on the distro, usually is home/Accessories/Terminal)
+2. open the terminal (depends by the distro, usually is home/Accessories/Terminal)
 3. on PowerShell, enter inside the script folder
-4. digit `npm install`
+4. type `npm install`
 
 ## Configuration
 To make this tool works, it's required to edit those files: `config.json` and `banlist.txt`.
@@ -45,8 +45,14 @@ username,reason to ban
 ```
 
 ## Execution
-To begin the MASSIVE BAN, just digit `npm run ban` in the Terminal, inside the tool folder.
-I you want to use a different text file, digit `node ban.js -f path/to/file.txt`.
+To begin the MASSIVE BAN, just type `npm run ban` in the Terminal, inside the tool folder.
+I you want to use a different text file, type `node ban.js -f path/to/file.txt`.
+
+You can also choose the starting index of the list of users to ban, by using the `-i` option: `node ban.js -f path/to/file.txt -i 10`
+
+This is useful when Twitch returns no response, so you don't have to start again from the beginning.
+
+For a brief list of available options, just type `node ban.js -h`
 
 Have fun!
 
@@ -102,5 +108,11 @@ Se volete usare un altro file, digitate `node ban.js -f percorso/del/file.txt`.
 
 Lo script inizierà a bannare gli utenti su ogni singolo canale inserito nel file `config.json`.
 Ci impiega un pò perchè a Twitch non piace quando gli si inviano tante richieste provenienti dallo stesso indirizzo IP allo stesso momento.
+
+È possibile selezionare un punto di inizio della liste degli utenti da bannare con l'opzione `-i`, es. `node ban.js -f path/to/file.txt -i 10`
+
+Questa opzione è utile nel caso Twitch rifiuta di rispondere alla richiesta, in questo modo si evita di ricominciare tutto da capo.
+
+Per una breve lista di opzioni disponibili, basta digitare `node ban.js -h`
 
 Divertitevi!

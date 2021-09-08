@@ -8,9 +8,13 @@ const argv = yargs(hideBin(process.argv))
             .alias('f','file')
             .nargs('f', 1)
             .describe('f', 'Load a file')
+            .alias('i','index')
+            .nargs('i', 1)
+            .describe('i', 'Starting user index')
             .demandOption(['f'])
             .help()
             .alias('help','h')
+            .alias('version','v')
             .argv
 
 if(!argv.file) {
@@ -38,36 +42,38 @@ const delay = time => new Promise(res => setTimeout(res, time))
 console.log('users to ban: %s',file.length)
 
 client.on('connected', async () => {
-  let i = 0
+  let i = argv.index || 0
 
-  while(channels[i]) {
-    console.log('channel: %s',channels[i])
+  while(file[i]) {
+    [user,reason] = file[i].split(',')
+
+    console.log('--------------------')
+    console.log(i,`- user: ${user}`)
+    console.log('--------------------')
+    
     let j = 0
-    while(file[j]) {
-      [user,reason] = file[j].split(',')
+    while(channels[j]) {
       
       const time = Math.floor(Math.random()*50)+50
       
       await delay(time)
 
-      await client.ban(channels[i],user,reason)
+      await client.ban(channels[j],user,reason)
       .then(data => {
-        console.log(j,data,time)
-        j += 1
+        console.log(channels[j],data,`- delay: ${time}ms`)
       })
       .catch(async e => {
-        console.log(j,e,time)
+        console.log(channels[j],e,`- delay: ${time}ms`)
         if(
           e !== 'already_banned'
           && e !== 'invalid_user'
         ) {
-          console.log('retrying after 10 sec...')
-          await delay(10000)
-        } else {
-          j += 1
+          process.exit(1)
         }
       })
-
+      .finally(() => {
+        j += 1
+      })
     }
     i += 1
   }
