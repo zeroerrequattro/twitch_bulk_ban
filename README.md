@@ -52,6 +52,8 @@ You can also choose the starting index of the list of users to ban, by using the
 
 This is useful when Twitch returns no response, so you don't have to start again from the beginning.
 
+If you have a list of users but you don't know which one is real or active, you can use `-w` to filter and write them on a separate textfile.
+
 For a brief list of available options, just type `node ban.js -h`
 
 Have fun!
@@ -112,6 +114,8 @@ Ci impiega un pò perchè a Twitch non piace quando gli si inviano tante richies
 È possibile selezionare un punto di inizio della liste degli utenti da bannare con l'opzione `-i`, es. `node ban.js -f path/to/file.txt -i 10`
 
 Questa opzione è utile nel caso Twitch rifiuta di rispondere alla richiesta, in questo modo si evita di ricominciare tutto da capo.
+
+Se hai una lista di utenti ma non sai quali sono quelli reali o attivi, puoi usare l'opzione `-w`, in modo da filtrarli e salvarli in un file separato.
 
 Per una breve lista di opzioni disponibili, basta digitare `node ban.js -h`
 

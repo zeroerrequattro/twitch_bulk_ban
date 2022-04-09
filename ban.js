@@ -3,6 +3,9 @@ const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 const tmi   = require('tmi.js')
 const config = require('./config.json')
+const { delay, now } = require('./utils')
+const [year, month, day, hour, minutes] = now()
+const validFile = `lists/banlist_${year}${month}${day}_${hour}${minutes}.txt`
 
 const argv = yargs(hideBin(process.argv))
             .alias('f','file')
@@ -11,6 +14,9 @@ const argv = yargs(hideBin(process.argv))
             .alias('i','index')
             .nargs('i', 1)
             .describe('i', 'Starting user index')
+            .alias('w','write')
+            .nargs('w', 0)
+            .describe('w', 'Write banned users in a separate file')
             .demandOption(['f'])
             .help()
             .alias('help','h')
@@ -37,8 +43,6 @@ const client = tmi.Client({
   }
 })
 
-const delay = time => new Promise(res => setTimeout(res, time))
-
 console.log('users to ban: %s',file.length)
 
 client.on('connected', async () => {
@@ -46,12 +50,13 @@ client.on('connected', async () => {
 
   while(file[i]) {
     [user,reason] = file[i].split(',')
-
+    
     console.log('--------------------')
     console.log(i,`- user: ${user}`)
     console.log('--------------------')
     
     let j = 0
+    let isValid = false
     while(channels[j]) {
       
       const time = Math.floor(Math.random()*50)+50
@@ -59,22 +64,32 @@ client.on('connected', async () => {
       await delay(time)
 
       await client.ban(channels[j],user,reason)
-      .then(data => {
-        console.log(channels[j],data,`- delay: ${time}ms`)
-      })
-      .catch(async e => {
-        console.log(channels[j],e,`- delay: ${time}ms`)
-        if(
-          e !== 'already_banned'
-          && e !== 'invalid_user'
-        ) {
-          process.exit(1)
-        }
-      })
-      .finally(() => {
-        j += 1
-      })
+                  .then(data => {
+                    console.log(channels[j],data,`- delay: ${time}ms`)
+                    isValid = true
+                  })
+                  .catch(async e => {
+                    console.log(channels[j],e,`- delay: ${time}ms`)
+                    if(e === 'already_banned') {
+                      isValid = true
+                    }
+                    
+                    if(
+                      e !== 'already_banned'
+                      && e !== 'invalid_user'
+                    ) {
+                      process.exit(1)
+                    }
+                  })
+                  .finally(() => {
+                    j += 1
+                  })
     }
+
+    if(isValid && argv.write) {
+      fs.appendFileSync(validFile,`${user},${reason}\n`)
+    }
+    
     i += 1
   }
 
