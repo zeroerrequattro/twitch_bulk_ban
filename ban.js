@@ -5,7 +5,7 @@ const tmi   = require('tmi.js')
 const config = require('./config.json')
 const { delay, now } = require('./utils')
 const [year, month, day, hour, minutes] = now()
-const validFile = `lists/banlist_${year}${month}${day}_${hour}${minutes}.txt`
+const validFile = `banlist_${year}${month}${day}_${hour}${minutes}.txt`
 
 const argv = yargs(hideBin(process.argv))
             .alias('f','file')
