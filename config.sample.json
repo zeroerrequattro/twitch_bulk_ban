@@ -1,5 +1,6 @@
 {
   "username": "il_tuo_username",
+  "client_id": "client_id",
   "access_token": "access_token",
   "channels": [
     "canale_01",

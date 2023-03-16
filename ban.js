@@ -2,8 +2,10 @@ const fs    = require('fs')
 const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 const tmi   = require('tmi.js')
+const { StaticAuthProvider } = require('@twurple/auth')
+const { ApiClient } = require('@twurple/api')
 const config = require('./config.json')
-const { delay, now } = require('./utils')
+const { now } = require('./utils')
 const [year, month, day, hour, minutes] = now()
 const validFile = `banlist_${year}${month}${day}_${hour}${minutes}.txt`
 
@@ -30,70 +32,74 @@ if(!argv.file) {
 
 const file  = fs.readFileSync(argv.file, 'utf-8').split('\n')
 
-const channels = config.channels
+const { channels, username, client_id, access_token } = config
 
-const client = tmi.Client({
-  connection: {
-    reconnect: true
-  },
-  channels: channels,
-  identity: {
-    username: config.username,
-    password: config.access_token,
-  }
-})
+const authProvider = new StaticAuthProvider(client_id, access_token)
 
-console.log('users to ban: %s',file.length)
+const main = async () => {
+  const client = new ApiClient({ authProvider })
+  const moderator = await client.users.getUserByName(username)
 
-client.on('connected', async () => {
+  console.log('users to ban: %s',file.length)
+
   let i = argv.index || 0
 
   while(file[i]) {
-    [user,reason] = file[i].split(',')
-    
-    console.log('--------------------')
-    console.log(i,`- user: ${user}`)
-    console.log('--------------------')
-    
-    let j = 0
-    let isValid = false
-    while(channels[j]) {
+    try {
+      [usernameToBan,reason] = file[i].split(',')
+      const userToBan = await client.users.getUserByName(usernameToBan)
+      console.log({ ...userToBan })
       
-      const time = Math.floor(Math.random()*50)+50
-      
-      await delay(time)
+      if(userToBan === null) {
+        throw new Error('user not found')
+      }
 
-      await client.ban(channels[j],user,reason)
-                  .then(data => {
-                    console.log(channels[j],data,`- delay: ${time}ms`)
-                    isValid = true
-                  })
-                  .catch(async e => {
-                    console.log(channels[j],e,`- delay: ${time}ms`)
-                    if(e === 'already_banned') {
-                      isValid = true
-                    }
-                    
-                    if(
-                      e !== 'already_banned'
-                      && e !== 'invalid_user'
-                    ) {
-                      process.exit(1)
-                    }
-                  })
-                  .finally(() => {
-                    j += 1
-                  })
-    }
-
-    if(isValid && argv.write) {
-      fs.appendFileSync(validFile,`${user},${reason}\n`)
-    }
+      console.log('--------------------')
+      console.log(i,`- user: ${usernameToBan}, ${userToBan.id}`)
+      console.log('--------------------')
     
-    i += 1
+      let j = 0
+      let isValid = false
+      while(channels[j]) {
+
+        try {
+          const broadcaster = await client.users.getUserByName(channels[j])
+
+          const ban = await client.moderation.banUser(
+            broadcaster,
+            moderator,
+            {
+              duration: null,
+              user: userToBan,
+              reason,
+            }
+          )
+          isValid = true
+          console.log(channels[j], usernameToBan)
+        } catch (error) {
+          console.log(error)
+          const { message } = JSON.parse(error.body)
+          console.log(usernameToBan, message)
+
+          if( message.includes('already banned') ) {
+            isValid = true
+          }
+        } finally {
+          j += 1
+        }
+      }
+
+      if(isValid && argv.write) {
+        fs.appendFileSync(validFile,`${user},${reason}\n`)
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      i += 1
+    }
   }
 
   process.exit(0)
-})
+}
 
-client.connect()
+main()

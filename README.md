@@ -19,21 +19,21 @@ To use this tool, you need:
 ## MacOS installation
 1. install `node.js` and `npm`: https://www.programsbuzz.com/article/install-node-js-and-npm-mac-os
 2. open the terminal (Applications/Utility/Terminal)
-3. on PowerShell, enter inside the script folder
+3. on Terminal, enter inside the script folder
 4. type `npm install`
 
 ## Linux installation
 1. installa `node.js` and `npm`: https://linuxconfig.org/how-to-install-node-js-on-linux
 2. open the terminal (depends by the distro, usually is home/Accessories/Terminal)
-3. on PowerShell, enter inside the script folder
+3. on Terminal, enter inside the script folder
 4. type `npm install`
 
 ## Configuration
 To make this tool works, it's required to edit those files: `config.json` and `banlist.txt`.
 Inside `config.json` you have to write:
 - Your username
-- the access_token generated here: https://twitchtokengenerator.com/
-- the list of the channel you're mod in
+- the `client_id` and the `access_token` generated here: https://twitchtokengenerator.com/
+- the list of channels you're mod in them
 
 Inside `banlist.txt` you have to insert the users to ban.
 A line, a user banned.
@@ -92,7 +92,7 @@ Scherzi a parte:
 Per far funzionare lo script è necessario editare i file `config.json` e `banlist.txt`.
 Dentro `config.json` devi inserire:
 - Il tuo username
-- l'access_token generato qui: https://twitchtokengenerator.com/
+- il `client_id` e l'`access_token` generato qui: https://twitchtokengenerator.com/
 - la lista dei canali che moderi
 
 Dentro `banlist.txt` inserisci la gente che si vuole bannare.
