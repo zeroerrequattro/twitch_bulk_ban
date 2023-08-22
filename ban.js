@@ -48,7 +48,6 @@ const main = async () => {
     try {
       [usernameToBan,reason] = file[i].split(',')
       const userToBan = await client.users.getUserByName(usernameToBan)
-      console.log({ ...userToBan })
       
       if(userToBan === null) {
         throw new Error('user not found')
@@ -75,11 +74,10 @@ const main = async () => {
             }
           )
           isValid = true
-          console.log(channels[j], usernameToBan)
-        } catch (error) {
-          console.log(error)
-          const { message } = JSON.parse(error.body)
-          console.log(usernameToBan, message)
+          console.log(`${channels[j]} - ✅`)
+        } catch ({ _body }) {
+          const { message } = JSON.parse(_body)
+          console.log(`${channels[j]} - ${message}`)
 
           if( message.includes('already banned') ) {
             isValid = true
