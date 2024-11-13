@@ -50,7 +50,8 @@ const main = async () => {
       const userToBan = await client.users.getUserByName(usernameToBan)
       
       if(userToBan === null) {
-        throw new Error('user not found')
+        console.log(`${usernameToBan} not found`)
+        continue
       }
 
       console.log('--------------------')
@@ -75,7 +76,8 @@ const main = async () => {
           )
           isValid = true
           console.log(`${channels[j]} - ✅`)
-        } catch ({ _body }) {
+        } catch ({ _body, ...request }) {
+          console.log({ request })
           const { message } = JSON.parse(_body)
           console.log(`${channels[j]} - ${message}`)
 
